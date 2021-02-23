@@ -28,12 +28,12 @@ jobs:
 
       - name: Run tests
         run: |
-          cd server/src/MergeBot
+          cd server
           if [ -f docker-compose.test.yml ]; then
             docker-compose --file docker-compose.test.yml build
             docker-compose --file docker-compose.test.yml run sut
           else
-            docker build . --file Dockerfile
+            docker build . --file src/MergeBot/DockerfileDockerfile
           fi
 
   # Push image to GitHub Packages.
@@ -50,8 +50,8 @@ jobs:
 
       - name: Build image
         run: |
-          cd server/src/MergeBot/ 
-          docker build . --file Dockerfile --tag $IMAGE_NAME
+          cd server
+          docker build . --file src/MergeBot/DockerfileDockerfile --tag $IMAGE_NAME
 
       - name: Log into registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
