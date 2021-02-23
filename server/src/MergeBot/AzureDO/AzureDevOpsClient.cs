@@ -47,10 +47,6 @@ namespace MergeBot
             var pr = await GetAsync<GitPullRequest>(url);
             return pr;
         }
-        public async Task<MergePolicyConfigurationList> GetMergePoliciesAsync(string organization, string repo)
-        {
-            return await GetMergePoliciesAsync(organization, repo, null);
-        }
 
         public async Task<MergePolicyConfigurationList> GetMergePoliciesAsync(string organization, string repo, string baseUrl)
         {

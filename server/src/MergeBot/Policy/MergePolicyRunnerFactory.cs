@@ -11,7 +11,7 @@ namespace MergeBot
 {
     public class MergePolicyRunnerFactoryContext : IEquatable<MergePolicyRunnerFactoryContext>
     {
-        public MergePolicyRunnerFactoryContext(IAzureDevOpsClient azDoClient, string repositoryId, string organization, String baseUrl = null)
+        public MergePolicyRunnerFactoryContext(IAzureDevOpsClient azDoClient, string repositoryId, string organization, string baseUrl = "")
         {
             AzDoClient = azDoClient ?? throw new ArgumentNullException(nameof(azDoClient));
             RepositoryId = repositoryId ?? throw new ArgumentNullException(nameof(repositoryId));
