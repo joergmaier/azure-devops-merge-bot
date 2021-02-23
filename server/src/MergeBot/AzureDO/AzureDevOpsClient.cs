@@ -47,13 +47,21 @@ namespace MergeBot
             var pr = await GetAsync<GitPullRequest>(url);
             return pr;
         }
-
         public async Task<MergePolicyConfigurationList> GetMergePoliciesAsync(string organization, string repo)
+        {
+            return await GetMergePoliciesAsync(organization, repo, null);
+        }
+
+        public async Task<MergePolicyConfigurationList> GetMergePoliciesAsync(string organization, string repo, string baseUrl)
         {
             var settings = _settings.CurrentValue;
             var publisherId = Uri.EscapeDataString(settings.PublisherId);
             var extensionId = Uri.EscapeDataString(settings.ExtensionId);
-            var url = $"https://extmgmt.dev.azure.com/{Uri.EscapeDataString(organization)}/_apis/ExtensionManagement/InstalledExtensions/{publisherId}/{extensionId}/Data/Scopes/Default/Current/Collections/MergePolicies-{Uri.EscapeDataString(repo)}/Documents";
+            var url = "";
+            if (string.IsNullOrEmpty(baseUrl) )
+                url = $"https://extmgmt.dev.azure.com/{Uri.EscapeDataString(organization)}/_apis/ExtensionManagement/InstalledExtensions/{publisherId}/{extensionId}/Data/Scopes/Default/Current/Collections/MergePolicies-{Uri.EscapeDataString(repo)}/Documents";
+            else
+                url = $"{baseUrl}/{Uri.EscapeDataString(organization)}/_apis/ExtensionManagement/InstalledExtensions/{publisherId}/{extensionId}/Data/Scopes/Default/Current/Collections/MergePolicies-{Uri.EscapeDataString(repo)}/Documents";
             
             var request = new HttpRequestMessage(HttpMethod.Get, url);
             request.Headers.Authorization = _authHeaderValue;
@@ -107,7 +115,7 @@ namespace MergeBot
             var request = new HttpRequestMessage(HttpMethod.Patch, url);
             request.Headers.Authorization = _authHeaderValue;
 
-            var body = new GitPullRequest
+            var body = new GitPullRequestCompetion
             { 
                 Status = "completed",
                 LastMergeSourceCommit = new GitCommitRef { 

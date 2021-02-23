@@ -9,6 +9,6 @@ namespace MergeBot
         Task<GitPullRequestList> GetOpenPullRequestsAsync(string repoUrl, string sourceBranch, string targetBranch);
         Task<GitPullRequest> GetPullRequestAsync(string repoUrl, int pullRequestId);
         Task<GitPullRequest> CompletePullRequestAsync(string repoUrl, int pullRequestId, string lastMergeSourceCommit);
-        Task<MergePolicyConfigurationList> GetMergePoliciesAsync(string organization, string repo);
+        Task<MergePolicyConfigurationList> GetMergePoliciesAsync(string organization, string repo, string baseUrl);
     }
 }

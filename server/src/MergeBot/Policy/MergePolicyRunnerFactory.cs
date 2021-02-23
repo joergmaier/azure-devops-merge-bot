@@ -11,11 +11,12 @@ namespace MergeBot
 {
     public class MergePolicyRunnerFactoryContext : IEquatable<MergePolicyRunnerFactoryContext>
     {
-        public MergePolicyRunnerFactoryContext(IAzureDevOpsClient azDoClient, string repositoryId, string organization)
+        public MergePolicyRunnerFactoryContext(IAzureDevOpsClient azDoClient, string repositoryId, string organization, String baseUrl = null)
         {
             AzDoClient = azDoClient ?? throw new ArgumentNullException(nameof(azDoClient));
             RepositoryId = repositoryId ?? throw new ArgumentNullException(nameof(repositoryId));
             Organization = organization ?? throw new ArgumentNullException(nameof(organization));
+            BaseURL = baseUrl;
         }
 
         public MergePolicyRunnerFactoryContext(string repositoryId, string organization)
@@ -27,6 +28,7 @@ namespace MergeBot
         public IAzureDevOpsClient? AzDoClient { get; }
         public string RepositoryId { get; }
         public string Organization { get; }
+        public string BaseURL { get; }
 
         public bool Equals([AllowNull] MergePolicyRunnerFactoryContext other)
         {
@@ -81,7 +83,7 @@ namespace MergeBot
 
         private async Task<IMergePolicyRunner> CreateNew(MergePolicyRunnerFactoryContext context)
         {
-            var policyConfiguration = await context.AzDoClient!.GetMergePoliciesAsync(context.Organization, context.RepositoryId);
+            var policyConfiguration = await context.AzDoClient!.GetMergePoliciesAsync(context.Organization, context.RepositoryId, context.BaseURL);
             if (policyConfiguration.Value is null || policyConfiguration.Value.Count == 0)
                 return NoopMergePolicyRunner.Instance;
 

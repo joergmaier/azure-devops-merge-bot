@@ -45,15 +45,25 @@ namespace MergeBot
         private string _normalizedUrl;
         public string NormalizedUrl
         {
-            get 
+            get
             {
                 if (!string.IsNullOrEmpty(_normalizedUrl))
                     return _normalizedUrl;
 
+                var uri = new Uri(Url);
                 if (Url.StartsWith("https://dev.azure.com/"))
-                    return _normalizedUrl = Url;
+                {
+                    _normalizedUrl = Url;
+                }
+                else if (uri.Host.EndsWith("visualstudio.com"))
+                {
+                    _normalizedUrl = string.Format("https://dev.azure.com/{0}/_apis/git/repositories/{1}", GetOrganization(), Id);
+                }
+                else
+                {
+                    _normalizedUrl = Url;
+                }
 
-                _normalizedUrl = string.Format("https://dev.azure.com/{0}/_apis/git/repositories/{1}", GetOrganization(), Id);
                 return _normalizedUrl;
             }
         }
@@ -65,8 +75,28 @@ namespace MergeBot
                 return uri.Segments[1].TrimEnd('/');
             else if (uri.Host.EndsWith("visualstudio.com", StringComparison.OrdinalIgnoreCase))
                 return uri.Host.Substring(0, uri.Host.IndexOf('.'));
+            else if (String.Equals(uri.Segments[2].TrimEnd('/'), "_apis", StringComparison.OrdinalIgnoreCase))
+                return uri.Segments[1].TrimEnd('/');
+            else if (String.Equals(uri.Segments[3].TrimEnd('/'), "_apis", StringComparison.OrdinalIgnoreCase))
+                return uri.Segments[2].TrimEnd('/');
 
-            throw new InvalidOperationException("Unknown url format: " + uri.ToString());
+            throw new InvalidOperationException("GetOrganization Unknown url format: " + uri.ToString());
+        }
+
+        public string GetBaseUrl()
+        {
+            var uri = new Uri(Url);
+            var baseUrl =  uri.Scheme + "://" + uri.Host + "/";
+            if (string.Equals(uri.Host, "dev.azure.com", StringComparison.OrdinalIgnoreCase))
+                return null;
+            else if (uri.Host.EndsWith("visualstudio.com", StringComparison.OrdinalIgnoreCase))
+                return null;
+            else if (String.Equals(uri.Segments[2].TrimEnd('/'), "_apis", StringComparison.OrdinalIgnoreCase) || String.Equals(uri.Segments[3].TrimEnd('/'), "_apis", StringComparison.OrdinalIgnoreCase))
+                return baseUrl + uri.Segments[1].TrimEnd('/');
+            else if (String.Equals(uri.Segments[1].TrimEnd('/'), "_apis", StringComparison.OrdinalIgnoreCase))
+                return baseUrl;
+
+            throw new InvalidOperationException("GetBaseUrl: Unknown url format: " + uri.ToString());
         }
     }
 }

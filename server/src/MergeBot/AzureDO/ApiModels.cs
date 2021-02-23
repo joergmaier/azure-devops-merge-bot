@@ -54,6 +54,15 @@ namespace MergeBot
         public GitPullRequestCompletionOptions CompletionOptions { get; set; }
     }
 
+    public class GitPullRequestCompetion
+    {
+
+        public string Status { get; set; }
+
+        public GitCommitRef LastMergeSourceCommit { get; set; }
+        public GitPullRequestCompletionOptions CompletionOptions { get; set; }
+    }
+
     public class GitCommitRef
     {
         public string CommitId { get; set; }
