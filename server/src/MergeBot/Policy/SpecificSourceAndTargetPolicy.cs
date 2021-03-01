@@ -36,6 +36,11 @@ namespace MergeBot
             _targetBranch = GitBranch.Canonize(configuration.Target);
         }
 
+        public override MergePolicy Copy()
+        {
+            return (SpecificSourceAndTargetPolicy)this.MemberwiseClone();
+        }
+
         public override async Task HandleAsync(MergePolicyContext context)
         {
             var update = context.Update;

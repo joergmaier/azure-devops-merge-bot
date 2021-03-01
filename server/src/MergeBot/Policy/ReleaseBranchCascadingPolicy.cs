@@ -33,6 +33,11 @@ namespace MergeBot
             _repositoryId = configuration.RepositoryId;
         }
 
+        public override MergePolicy Copy()
+        {
+            return (ReleaseBranchCascadingPolicy)this.MemberwiseClone();
+        }
+
         public override async Task HandleAsync(MergePolicyContext context)
         {
             var update = context.Update;

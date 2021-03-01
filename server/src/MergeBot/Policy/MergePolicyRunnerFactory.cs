@@ -109,7 +109,7 @@ namespace MergeBot
                         _logger.LogDebug(new EventId(1, "ConfigurationFailed"), ex, "Failed to configure {Policy} with {@Config}", policyType.Name, policyConfig);
                         return NoopMergePolicyRunner.Instance;
                     }
-                    policies.Add(policy);
+                    policies.Add(policy.Copy());
                 }
             }
 

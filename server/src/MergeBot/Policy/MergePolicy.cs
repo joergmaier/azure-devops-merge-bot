@@ -16,5 +16,7 @@ namespace MergeBot
         public abstract void Configure(MergePolicyConfiguration configuration);
 
         public abstract Task HandleAsync(MergePolicyContext context);
+
+        public abstract MergePolicy Copy();
     }
 }

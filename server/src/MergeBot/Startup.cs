@@ -136,6 +136,9 @@ namespace MergeBot
                     var factoryContext = new MergePolicyRunnerFactoryContext(azDoClient, payload.Resource.Repository.Id, organization, baseUrl);
                     var runner = await runnerFactory.CreateAsync(factoryContext);
                     await runner.RunAsync(azDoClient, payload);
+
+
+                    runnerFactory.Clear(factoryContext);
                 }
             }
 
