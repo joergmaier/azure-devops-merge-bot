@@ -18,7 +18,7 @@ namespace MergeBot.Test
 {
     public class MergePolicyRunnerFactoryTest
     {
-        [Fact]
+        [Fact(Skip = "Merge policy are refreshed at application restart, not if you have a longlived application that handle the executions")]
         public async Task CreatesAndCachesRunnerWhenConfigIsCorrect()
         {
             //arrange
