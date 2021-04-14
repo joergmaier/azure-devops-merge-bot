@@ -22,6 +22,7 @@ namespace MergeBot
         }
 
         public override string Name => PolicyName;
+        public string? DeaultBranch => _defaultBranch;
 
         public override void Configure(MergePolicyConfiguration configuration)
         {

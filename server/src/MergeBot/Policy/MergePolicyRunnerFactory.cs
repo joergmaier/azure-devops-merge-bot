@@ -78,7 +78,9 @@ namespace MergeBot
 
         public Task<IMergePolicyRunner> CreateAsync(MergePolicyRunnerFactoryContext context)
         {
-            return _cache.GetOrAdd(context, _valueFactory);
+            return _valueFactory(context);
+            // Caching by the context will not reflect changes that are done in DevOps for the Merge-Policies.
+            //return _cache.GetOrAdd(context, _valueFactory);
         }
 
         private async Task<IMergePolicyRunner> CreateNew(MergePolicyRunnerFactoryContext context)
