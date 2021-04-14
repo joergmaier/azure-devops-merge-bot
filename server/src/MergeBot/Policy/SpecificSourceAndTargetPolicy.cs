@@ -23,9 +23,6 @@ namespace MergeBot
 
         public override string Name => PolicyName;
 
-        public string? SourceBranch => _sourceBranch;
-        public string? TargetBranch => _targetBranch;
-
         public override void Configure(MergePolicyConfiguration configuration)
         {
             if (string.IsNullOrEmpty(configuration.Source))
