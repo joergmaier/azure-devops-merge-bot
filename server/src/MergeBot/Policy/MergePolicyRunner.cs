@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 
@@ -33,21 +32,14 @@ namespace MergeBot
                     }
 
                     var context = new MergePolicyContext(azDoclient, update, payload);
-                    try
-                    {
-                        await policy.HandleAsync(context);
-                    }
-                    catch (Exception e)
-                    {
-                        _logger.LogError(new EventId(7, "PolicyFailure"), e, "Policy {@Policy} for {RepositoryId} failed: {Message}", policy, payload.Resource.Repository.Id, e.Message);
-                    }
+                    await policy.HandleAsync(context);
                 }
             }
         }
 
         private static bool IsNewBranch(string objectId)
         {
-            foreach (var ch in objectId)
+            foreach(var ch in objectId)
             {
                 if (ch != '0')
                     return false;

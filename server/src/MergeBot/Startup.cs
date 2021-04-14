@@ -41,8 +41,8 @@ namespace MergeBot
             services.AddSingleton<IMergePolicyRunnerFactory, MergePolicyRunnerFactory>();
             services.AddSingleton<IAzureDevOpsClientFactory, AzureDevOpsClientFactory>();
             services.AddSingleton<IPullRequestMonitor>(c => new PullRequestMonitor(c.GetService<ILogger<PullRequestMonitor>>()));
-            services.AddTransient<ReleaseBranchCascadingPolicy>();
-            services.AddTransient<SpecificSourceAndTargetPolicy>();
+            services.AddSingleton<ReleaseBranchCascadingPolicy>();
+            services.AddSingleton<SpecificSourceAndTargetPolicy>();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
