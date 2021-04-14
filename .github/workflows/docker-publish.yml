@@ -15,7 +15,7 @@ on:
 
 env:
   # TODO: Change variable to your image's name.
-  IMAGE_NAME: MergeBotServer
+  IMAGE_NAME: azure-devops-merge-bot-server
 
 jobs:
   # Run tests.
@@ -33,7 +33,7 @@ jobs:
             docker-compose --file docker-compose.test.yml build
             docker-compose --file docker-compose.test.yml run sut
           else
-            docker build . --file src/MergeBot/DockerfileDockerfile
+            docker build . --file src/MergeBot/Dockerfile
           fi
 
   # Push image to GitHub Packages.
@@ -51,7 +51,7 @@ jobs:
       - name: Build image
         run: |
           cd server
-          docker build . --file src/MergeBot/DockerfileDockerfile --tag $IMAGE_NAME
+          docker build . --file src/MergeBot/Dockerfile --tag $IMAGE_NAME
 
       - name: Log into registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
